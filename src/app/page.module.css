@@ -28,6 +28,9 @@
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
 }
+.left>h4{
+  margin-top: 40px;
+}
 .right {
   width: 50%;
   height: 600px;
@@ -49,7 +52,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 120px;
+  padding-top: 80px;
   gap: 50px;
   
 }

@@ -5,8 +5,12 @@ import { FieldValue, useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+
 export default function Home() {
-  const { register, handleSubmit , reset} = useForm();
+  const router = useRouter();
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data: FieldValue<JSON>) => {
     try {
@@ -18,7 +22,9 @@ export default function Home() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        console.log("Logged in and cookie set");
+        const responseData = await response.json(); // parse the response data
+        console.log("Logged in and cookie set", responseData.userEmail); // access userEmail from the response data
+         router.push(`/dashboard/${responseData.userEmail}`); // redirect to the dashboard page
       } else {
         console.error("Invalid credentials");
         reset();
@@ -33,7 +39,13 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>Login</h1>
-            <form onSubmit={handleSubmit(onSubmit)}  className={styles.form} action="/login" method="post">
+          <h4>Please verify your credentials.</h4>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={styles.form}
+            action="/login"
+            method="post"
+          >
             <TextField
               sx={{
                 input: { color: "white" },
