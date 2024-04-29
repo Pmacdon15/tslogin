@@ -28,9 +28,7 @@ export async function POST(request: NextRequest) {
         const user = {username: email};
         const token = jwt.sign(user, process.env.SECRET_KEY_JWT  as string, {
             expiresIn: "1h",
-          });
-          
-          
+        });      
 
         const query = {
             text: 'SELECT * FROM tsloginUsers WHERE email = $1 AND password = $2',
@@ -51,8 +49,11 @@ export async function POST(request: NextRequest) {
                 sameSite: "strict",
               });
     
-            return NextResponse.json({ message: 'Logged in and cookie set' }, { status:200}); // Use NextResponse.json() to set the status code and response body
-            //return NextResponse.redirect('/');
+              return NextResponse.json({
+                message: 'Logged in and cookie set',
+                userEmail: email, // add userEmail to the response
+                status: 200
+              });
         }
     } catch (error) {
         return NextResponse.json({ message: 'Internal server error: ' + error }, { status:500}); // Use NextResponse.json() to set the status code and response body

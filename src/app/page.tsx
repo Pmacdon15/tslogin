@@ -1,94 +1,107 @@
-import Image from "next/image";
+"use client";
+//import Image from "next/image";
 import styles from "./page.module.css";
+import { FieldValue, useForm } from "react-hook-form";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = async (data: FieldValue<JSON>) => {
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const responseData = await response.json(); // parse the response data
+        console.log("Logged in and cookie set for: ", responseData.userEmail); // access userEmail from the response data
+        router.push(`/dashboard/${responseData.userEmail}`); // redirect to the dashboard page
+      } else {
+        console.error("Invalid credentials");
+        reset();
+      }
+    } catch (error) {
+      console.error("Internal server error: " + error);
+    }
+  };
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <h1>Login</h1>
+          <h4>Please verify your credentials.</h4>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={styles.form}
+            action="/login"
+            method="post"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+            <TextField
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+                width: "70%",
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
+              variant="outlined"
+              {...register("email", { required: true })}
+              label="Enter your Email"
+              type="email"
             />
-          </a>
+            <TextField
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+                width: "70%",
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
+              variant="outlined"
+              {...register("password", { required: true })}
+              label="Enter your Password"
+              type="password"
+            />
+            <Button variant="contained" type="submit">
+              Login
+            </Button>
+          </form>
         </div>
-      </div>
+        <div className={styles.right}>
+          <h1>New to the site?</h1>
+          <h4>Easily create an account and start using the site today!!!!</h4>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          <Button
+            variant="contained"
+            onClick={() => {
+              router.push("/register");
+            }}
+          >
+            Register today
+          </Button>
+        </div>
       </div>
     </main>
   );
