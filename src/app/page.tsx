@@ -23,8 +23,8 @@ export default function Home() {
       });
       if (response.ok) {
         const responseData = await response.json(); // parse the response data
-        console.log("Logged in and cookie set", responseData.userEmail); // access userEmail from the response data
-         router.push(`/dashboard/${responseData.userEmail}`); // redirect to the dashboard page
+        console.log("Logged in and cookie set for: ", responseData.userEmail); // access userEmail from the response data
+        router.push(`/dashboard/${responseData.userEmail}`); // redirect to the dashboard page
       } else {
         console.error("Invalid credentials");
         reset();
@@ -91,6 +91,16 @@ export default function Home() {
         </div>
         <div className={styles.right}>
           <h1>New to the site?</h1>
+          <h4>Easily create an account and start using the site today!!!!</h4>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              router.push("/register");
+            }}
+          >
+            Register today
+          </Button>
         </div>
       </div>
     </main>
