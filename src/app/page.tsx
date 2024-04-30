@@ -49,7 +49,12 @@ export default function Home() {
             <TextField
               sx={{
                 input: { color: "white" },
-                label: { color: "white" },
+                label: { color: "white" }, // initial label color
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: "white", // focused label color
+                  },
+                },
                 width: "70%",
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -70,6 +75,11 @@ export default function Home() {
                 input: { color: "white" },
                 label: { color: "white" },
                 width: "70%",
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: "white", // focused label color
+                  },
+                },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
                     borderColor: "white",
