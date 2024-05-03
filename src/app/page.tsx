@@ -94,7 +94,14 @@ export default function Home() {
               label="Enter your Password"
               type="password"
             />
-            <Button variant="contained" type="submit">
+            <Button
+              sx={{
+                backgroundColor: "green",
+                background: "linear-gradient(to bottom, #5142d4, #6098ca)",
+              }}
+              variant="contained"
+              type="submit"
+            >
               Login
             </Button>
           </form>
@@ -107,6 +114,10 @@ export default function Home() {
             variant="contained"
             onClick={() => {
               router.push("/register");
+            }}
+            sx={{
+              backgroundColor: "green",
+              background: "linear-gradient(to bottom, #5142d4, #6098ca)",
             }}
           >
             Register today
