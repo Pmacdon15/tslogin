@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
-import { cookies } from "next/headers";
+import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from "next/server";
+import Auth from '../../../auth'; 
 
 type Prop = {
   params: {
@@ -8,18 +8,16 @@ type Prop = {
   };
 };
 
+
+
 export async function GET(request: NextRequest, props: Prop) {
   try {
-    const token = cookies().get("AuthCookieTracking")?.value ?? "";
-    const decoded = jwt.verify(token, process.env.SECRET_KEY_JWT) as {
-      username: string;
-    };
+    const auth = new Auth(); // Create an instance of the Auth class
+    // Pass the props to the verifyToken method
+    const userEmail = await auth.verifyToken(request, props);
 
-    const userEmail = props.params.userEmail;
-    console.log("User Email from api: ", userEmail);
-
-    if (decoded.username === userEmail) {
-      return NextResponse.json({ userEmail: decoded.username, status: 200 });
+    if (userEmail) {
+      return NextResponse.json({ userEmail, status: 200 });
     }
     throw new Error("User not authenticated");
   } catch (error) {

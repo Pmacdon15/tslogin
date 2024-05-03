@@ -24,6 +24,17 @@ class Database {
       throw error;
     }
   }
+  async register(email: string, first_name: string, last_name: string, password: string) {
+    try {
+      const result = await this.pool.query(
+        "INSERT INTO tsloginUsers (email, first_name, last_name, password, admin) VALUES ($1, $2, $3, $4, false)",
+        [email, first_name, last_name, password]
+      );
+      return result.rows;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Database;
