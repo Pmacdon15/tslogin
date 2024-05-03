@@ -43,8 +43,8 @@ export default function Home() {
           <form
             onSubmit={handleSubmit(onSubmit)}
             className={styles.form}
-            action="/login"
-            method="post"
+            // action="/login"
+            // method="post"
           >
             <TextField
               sx={{
@@ -69,6 +69,7 @@ export default function Home() {
               {...register("email", { required: true })}
               label="Enter your Email"
               type="email"
+              
             />
             <TextField
               sx={{

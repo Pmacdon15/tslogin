@@ -6,15 +6,23 @@ import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+
 
 export default function Register() {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm();
 
+
+
   const onSubmit = async (data: FieldValue<JSON>) => {
     try {
-      const response = await fetch("/login", {
+      if ((data as { password: string; confirmPassword: string }).password !== (data as { password: string; confirmPassword: string }).confirmPassword) {
+        console.error("Passwords do not match");
+        alert("Passwords do not match");
+        return;
+      }
+
+      const response = await fetch("/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,8 +30,8 @@ export default function Register() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        //const responseData = await response.json(); // parse the response data
-        //console.log("Logged in and cookie set for: ", responseData.userEmail); // access userEmail from the response data
+        const responseData = await response.json(); // parse the response data
+        console.log("User: ", responseData.email ," signed up!!"); 
         router.push(`/`); // redirect to the dashboard page
       } else {
         console.error("Issue with sign up. Please try again.");
@@ -36,13 +44,13 @@ export default function Register() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        <h1>Login</h1>
+        <h1>Sign Up</h1>
         <h4>Please register your credentials.</h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className={styles.form}
-        //   action="/login"
-        //   method="post"
+          //   action="/login"
+          //   method="post"
         >
           <TextField
             sx={{
@@ -66,7 +74,7 @@ export default function Register() {
             variant="outlined"
             {...register("email", { required: true })}
             label="Enter your Email"
-            type="email"
+            type="email"            
           />
           <TextField
             sx={{
@@ -165,7 +173,14 @@ export default function Register() {
             label="Confirm your Password"
             type="password"
           />
-          <Button variant="contained" type="submit" sx={{backgroundColor: "green", background: "linear-gradient(to bottom, #5142d4, #6098ca)"}}>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              backgroundColor: "green",
+              background: "linear-gradient(to bottom, #5142d4, #6098ca)",
+            }}
+          >
             Register today
           </Button>
         </form>
