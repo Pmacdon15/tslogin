@@ -14,7 +14,7 @@ export default function Home() {
 
   const onSubmit = async (data: FieldValue<JSON>) => {
     try {
-      const response = await fetch("/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,8 +43,8 @@ export default function Home() {
           <form
             onSubmit={handleSubmit(onSubmit)}
             className={styles.form}
-            action="/login"
-            method="post"
+            // action="/login"
+            // method="post"
           >
             <TextField
               sx={{
@@ -69,6 +69,7 @@ export default function Home() {
               {...register("email", { required: true })}
               label="Enter your Email"
               type="email"
+              
             />
             <TextField
               sx={{
@@ -94,7 +95,14 @@ export default function Home() {
               label="Enter your Password"
               type="password"
             />
-            <Button variant="contained" type="submit">
+            <Button
+              sx={{
+                backgroundColor: "green",
+                background: "linear-gradient(to bottom, #5142d4, #6098ca)",
+              }}
+              variant="contained"
+              type="submit"
+            >
               Login
             </Button>
           </form>
@@ -107,6 +115,10 @@ export default function Home() {
             variant="contained"
             onClick={() => {
               router.push("/register");
+            }}
+            sx={{
+              backgroundColor: "green",
+              background: "linear-gradient(to bottom, #5142d4, #6098ca)",
             }}
           >
             Register today
