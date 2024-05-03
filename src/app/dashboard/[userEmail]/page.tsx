@@ -17,7 +17,7 @@ export default function Dashboard(props: Prop) {
 
   useEffect(() => {
     try {
-      fetch(`/auth/${decodedUserEmail}`)
+      fetch(`/api/auth/${decodedUserEmail}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);

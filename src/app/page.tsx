@@ -14,7 +14,7 @@ export default function Home() {
 
   const onSubmit = async (data: FieldValue<JSON>) => {
     try {
-      const response = await fetch("/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
