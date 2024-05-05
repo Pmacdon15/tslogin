@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import Database from "./db.ts";
+import PasswordHasher from "./hasher.ts";
 
 type Prop = {
     params: {
@@ -16,12 +17,11 @@ class Auth {
       const { email, password } = requestBody; // Extract email and password from the request body
 
       const db = new Database();
-      const result = await db.query(
-        "SELECT * FROM tsloginUsers WHERE email = $1 AND password = $2",
-        [email, password]
+      const result = await db.verifyPassword (
+        email, password
       );
 
-      if (result.length === 0) {
+      if (!result) {
         return NextResponse.json(
           { message: "Invalid credentials" },
           { status: 401 }
