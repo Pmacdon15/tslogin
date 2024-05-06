@@ -1,4 +1,4 @@
-// import { Pool } from "pg";
+
 import PasswordHasher from "./hasher.ts";
 import { sql } from "@vercel/postgres";
 
@@ -27,9 +27,11 @@ class Database {
         INSERT INTO tsloginUsers (email, first_name, last_name, password) 
         VALUES (${email}, ${first_name}, ${last_name}, ${password})
       `;
-      return rows;
+      console.log("User registered: ", rows);
+      return true;
     } catch (error) {
-      throw error;
+      console.error("Error registering user: ", error);
+      return false;
     }
   }
 
