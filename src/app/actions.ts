@@ -51,7 +51,6 @@ async function verifyPassword(email: string, password: string) {
   try {    
     const db = new Database();
     const hash = await db.getHashedPassword(email); 
-
     const passwordHasher = new PasswordHasher();
     return await passwordHasher.verify(password, hash);
   } catch (error) {
