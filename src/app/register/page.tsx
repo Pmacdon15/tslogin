@@ -31,7 +31,7 @@ export default function Register() {
       });
       if (response.ok) {
         const responseData = await response.json(); // parse the response data
-        console.log("User: ", responseData.email ," signed up!!"); 
+        console.log("User: ", (data as { email: string }).email ," signed up!!"); 
         router.push(`/`); // redirect to the dashboard page
       } else {
         console.error("Issue with sign up. Please try again.");
