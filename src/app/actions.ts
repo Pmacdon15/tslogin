@@ -1,9 +1,10 @@
 "use server";
 
 import PasswordHasher from "./hasher.ts";
-import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import Database from "./db.ts";
+import { sql } from "@vercel/postgres";
 
 export async function signUp(
   email: string,
@@ -12,24 +13,11 @@ export async function signUp(
   password: string
 ) {
   const passwordHasher = new PasswordHasher();
-  try {
-    const { rows } = await sql`
-      INSERT INTO tsloginUsers (email, first_name, last_name, password) 
-      VALUES (${email}, ${first_name}, ${last_name}, ${await passwordHasher.hash(
-      password
-    )})
-    `;
-    if (Array.isArray(rows) && rows.length === 0) {
-      console.log("User registered");
-      console.log(rows);
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error("Error registering user: ", error);
-    return false;
-  }
+  const hashedPassword = await passwordHasher.hash(password);
+  const db = new Database();
+  return db.register(email, first_name, last_name, hashedPassword);
 }
+
 export async function login(email: string, password: string) {
   try {
     if (await verifyPassword(email, password)) {
@@ -60,18 +48,12 @@ export async function verifyToken(email: string) {
 
 // Helper functions
 async function verifyPassword(email: string, password: string) {
-  try {
+  try {    
+    const db = new Database();
+    const hash = await db.getHashedPassword(email); 
+
     const passwordHasher = new PasswordHasher();
-    const { rows } = await sql`
-      SELECT password FROM tsloginUsers WHERE email = ${email}
-    `;
-
-    if (rows.length === 0) {
-      return false; // User not found
-    }
-
-    const hashedPassword = rows[0].password;
-    return await passwordHasher.verify(password, hashedPassword);
+    return await passwordHasher.verify(password, hash);
   } catch (error) {
     console.error("Error verifying password: ", error);
     return false;
