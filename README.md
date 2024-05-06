@@ -66,6 +66,7 @@ POSTGRES_DATABASE=""
 ```
 
 3. Now we have to build the client easily done by running:
+
 ```Bash
 npm run build
 ```
@@ -75,6 +76,7 @@ npm run build
 # Start up
 
 Project can be easily started from the root by running:
+
 ```Bash
 npm run start
 ```
