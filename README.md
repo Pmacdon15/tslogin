@@ -29,6 +29,7 @@
 # Cloning
 
 1. Clone repository(git ssh method) run this command: 
+
 ```bash
 git clone git@github.com:Pmacdon15/tslogin.git
 ```
@@ -36,6 +37,7 @@ git clone git@github.com:Pmacdon15/tslogin.git
 # Setup
 
 After cloning run: 
+
 ```Bash
 cd tslogin
 ```
