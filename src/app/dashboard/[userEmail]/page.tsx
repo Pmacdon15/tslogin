@@ -8,20 +8,25 @@ type Prop = {
   };
 };
 
-export default async function Dashboard(props: Prop) {
+export default function Dashboard(props: Prop) {
   const userEmail = props.params.userEmail;
   const decodedUserEmail = decodeURIComponent(userEmail);
   console.log("Attempted User Email ", decodedUserEmail);
-  let authenticatedUser: boolean = false;
+  const [authenticatedUser, setAuthenticatedUser] = useState(false);
 
-  try {
-    if (await verifyToken(decodedUserEmail)) {
-      authenticatedUser = true;           
-    }    
-  } catch (error) {
-    console.error("Error: ", error);
-  }
-
+  useEffect(() => {
+    const AuthorizeUser = async () => {
+      try {
+        if (await verifyToken(decodedUserEmail)) {
+          setAuthenticatedUser(true);
+        }
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    };
+    AuthorizeUser();
+  }, [decodedUserEmail])
+  
   return authenticatedUser ? (
     <div>
       <h1>Welcome </h1>

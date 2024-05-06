@@ -20,6 +20,7 @@ export default function Register() {
     }
     try {
       if(await signUp(data.email, data.first_name, data.last_name, data.password)){
+        alert("User registered successfully");        
         router.push("/");
         return;
       }
