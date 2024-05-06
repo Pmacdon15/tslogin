@@ -17,11 +17,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { message: "User registered successfully" },
       { status: 200 },
-      {headers: 
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
       
     );
   } catch (error) {
