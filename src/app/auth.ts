@@ -64,7 +64,7 @@ class Auth {
 
     // Compare the requested username with the decoded token
     if (decoded.username === props.params.userEmail) {
-        console.log("User authenticated: ", decoded.username);
+        console.log("User authenticated on login:", decoded.username);
       return decoded.username;
     } else {
       return null;

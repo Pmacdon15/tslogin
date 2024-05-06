@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { verifyToken } from "../../actions.ts";
 
 type Prop = {
   params: {
@@ -11,29 +12,22 @@ export default function Dashboard(props: Prop) {
   const userEmail = props.params.userEmail;
   const decodedUserEmail = decodeURIComponent(userEmail);
   console.log("Attempted User Email ", decodedUserEmail);
-  const [user, setUser] = useState<string>();
-
-  // fetch the user data from the server
+  const [authenticatedUser, setAuthenticatedUser] = useState(false);
 
   useEffect(() => {
-    try {
-      fetch(`/api/auth/${decodedUserEmail}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          if (data.status === 200) {
-            console.log(data);
-            setUser(data.userEmail);
-          } else {
-            console.log("User not authenticated");
-          }
-        });
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  }, [decodedUserEmail]);
-
-  return user ? (
+    const AuthorizeUser = async () => {
+      try {
+        if (await verifyToken(decodedUserEmail)) {
+          setAuthenticatedUser(true);
+        }
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    };
+    AuthorizeUser();
+  }, [decodedUserEmail])
+  
+  return authenticatedUser ? (
     <div>
       <h1>Welcome </h1>
       <p>Good Day</p>

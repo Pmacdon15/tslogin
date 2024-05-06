@@ -1,36 +1,28 @@
 "use client";
-//import Image from "next/image";
+
 import styles from "./page.module.css";
-import { FieldValue, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+
+import { login } from "./actions.ts";
 
 export default function Home() {
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
 
-  const onSubmit = async (data: FieldValue<JSON>) => {
+  const onSubmit = async (data: { [key: string]: string }) => {    
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const responseData = await response.json(); // parse the response data
-        console.log("Logged in and cookie set for: ", responseData.userEmail); // access userEmail from the response data
-        router.push(`/dashboard/${responseData.userEmail}`); // redirect to the dashboard page
-      } else {
-        console.error("Invalid credentials");
-        reset();
+      if (await login(data.email, data.password)) {
+        router.push(`/dashboard/${data.email}`);
+        return;
       }
+      throw new Error("Error logging in user");
     } catch (error) {
-      console.error("Internal server error: " + error);
+      alert("Error logging in user");
+      console.error("Error logging in user: ", error);
     }
   };
 

@@ -1,57 +1,42 @@
 "use client";
-//import Image from "next/image";
+
 import styles from "./page.module.css";
-import { FieldValue, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
 import { useRouter } from "next/navigation";
 
+import { signUp } from "../actions.ts";
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
 
-
-
-  const onSubmit = async (data: FieldValue<JSON>) => {
+  const onSubmit = async (data: { [key: string]: string }) => {
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     try {
-      if ((data as { password: string; confirmPassword: string }).password !== (data as { password: string; confirmPassword: string }).confirmPassword) {
-        console.error("Passwords do not match");
-        alert("Passwords do not match");
+      if(await signUp(data.email, data.first_name, data.last_name, data.password)){
+        alert("User registered successfully");        
+        router.push("/");
         return;
       }
-
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const responseData = await response.json(); // parse the response data
-        console.log("User: ", (data as { email: string }).email ," signed up!!"); 
-        router.push(`/`); // redirect to the dashboard page
-      } else {
-        console.error("Issue with sign up. Please try again.");
-        //reset();
-      }
+      throw new Error("Error registering user");
     } catch (error) {
-      console.error("Internal server error: " + error);
+      alert("Error registering user");
+      console.error("Error registering user: ", error);
     }
   };
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <h1>Sign Up</h1>
         <h4>Please register your credentials.</h4>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className={styles.form}
-          //   action="/login"
-          //   method="post"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <TextField
             sx={{
               input: { color: "white" },
@@ -74,7 +59,7 @@ export default function Register() {
             variant="outlined"
             {...register("email", { required: true })}
             label="Enter your Email"
-            type="email"            
+            type="email"
           />
           <TextField
             sx={{
