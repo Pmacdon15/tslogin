@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TS Login
 
-## Getting Started
+## Table of Contents
+- [Description](#Description)
+- [Features](#Features)
+  - [Current Features](#Current-Features) 
+  - [Coming Soon](#Coming-Soon)  
+- [Cloning](#Cloning)
+- [Setup](#Setup)
+- [Start Up](#Start-Up)
 
-First, run the development server:
+# Description
+ This project develops a robust authentication system for a Next.js application using TypeScript, incorporating industry-standard security measures. It utilizes Bcrypt for password hashing and JSON Web Tokens (JWT) for authentication, ensuring secure user sessions. The system implements HTTP-only cookies to store JWT tokens, providing an additional layer of security. With a focus on user privacy and security, this project demonstrates expertise in Next.js, TypeScript, JWT, and Bcrypt, offering a seamless and efficient authentication experience.
 
+# Features
+
+## Current Features
+
+1. JWT authentication through cookies.
+
+2. Password Hashing.
+
+3. PostgreSQL Backend.
+
+
+## Coming Soon
+1. Logout function to remove auth cookie.
+
+# Cloning
+
+1. Clone repository(git ssh method) run this command: 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:Pmacdon15/tslogin.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+After cloning run: 
+```Bash
+cd tslogin
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Once you are inside of the project directory you will have to run a few commands from the root directory to set the project up.
+The commands are:
 
-## Learn More
+1. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+ ```Bash
+ npm i
+ ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Setup .env file, run:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```env
+SECRET_KEY_JWT="Phrase can be anything"
+PEPPER_PHRASE="Phrase can be anything"
 
-## Deploy on Vercel
+POSTGRES_URL="
+POSTGRES_PRISMA_URL=""
+POSTGRES_URL_NO_SSL=""
+POSTGRES_URL_NON_POOLING=""
+POSTGRES_USER="default"
+POSTGRES_HOST=""
+POSTGRES_PASSWORD=""
+POSTGRES_DATABASE=""
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Now we have to build the client easily done by running:
+```Bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+4. Setup port forwarding on your router for both port 3000 and the answer you gave during setup.
+
+# Start up
+
+Project can be easily started from the root by running:
+```Bash
+npm run start
+```
+
+
