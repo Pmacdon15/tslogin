@@ -21,10 +21,12 @@ export default function Register() {
     try {
       if(await signUp(data.email, data.first_name, data.last_name, data.password)){
         router.push("/");
+        return;
       }
       throw new Error("Error registering user");
     } catch (error) {
       alert("Error registering user");
+      console.error("Error registering user: ", error);
     }
   };
 
