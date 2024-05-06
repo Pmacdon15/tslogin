@@ -1,55 +1,49 @@
-import { Pool } from "pg";
+// import { Pool } from "pg";
 import PasswordHasher from "./hasher.ts";
+import { sql } from "@vercel/postgres";
 
 class Database {
-  private pool: Pool;
   private passwordHasher: PasswordHasher;
-
+  
   constructor() {
-    this.pool = new Pool({
-      host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT || "5432"), // default to 5432 if not provided
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      ssl: {
-        rejectUnauthorized: true,
-      },
-    });
     this.passwordHasher = new PasswordHasher();
   }
-
   async query(query: string, values: any[]) {
     try {
-      const result = await this.pool.query(query, values);
+      const result = await sql`${query}`; // Wrap the query string in a template literal
       return result.rows;
-    } catch (error) {
-      throw error;
+    } catch (error: any) {
+      throw new Error(`Database query error: ${error.message}`);
     }
   }
-  async register(email: string, first_name: string, last_name: string, password: string) {
+  async register(
+    email: string,
+    first_name: string,
+    last_name: string,
+    password: string
+  ) {
     try {
-      const result = await this.pool.query(
-        "INSERT INTO tsloginUsers (email, first_name, last_name, password) VALUES ($1, $2, $3, $4)",
-        [email, first_name, last_name, password]
-      );
-      return result.rows;
+      const { rows } = await sql`
+        INSERT INTO tsloginUsers (email, first_name, last_name, password) 
+        VALUES (${email}, ${first_name}, ${last_name}, ${password})
+      `;
+      return rows;
     } catch (error) {
       throw error;
     }
   }
+
   async verifyPassword(email: string, password: string): Promise<boolean> {
     try {
-      const result = await this.pool.query(
-        "SELECT password FROM tsloginUsers WHERE email = $1",
-        [email]
-      );
+      const { rows } = await sql`
+        SELECT password FROM tsloginUsers WHERE email = ${email}
+      `;
 
-      if (result.rows.length === 0) {
+      if (rows.length === 0) {
         return false; // User not found
       }
 
-      const hashedPassword = result.rows[0].password;
+      const hashedPassword = rows[0].password;
       return await this.passwordHasher.verify(password, hashedPassword);
     } catch (error) {
       throw error;
