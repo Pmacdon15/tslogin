@@ -9,6 +9,10 @@ export async function POST(request: NextRequest) {
 
   try {
     const { email, first_name, last_name, password } = await request.json();
+    console.log("email: ", email);
+    console.log("first_name: ", first_name);
+    console.log("last_name: ", last_name);
+    
     const hasher = new PasswordHasher();
     const hashedPassword = await hasher.hash(password);
 
@@ -20,6 +24,7 @@ export async function POST(request: NextRequest) {
       
     );
   } catch (error) {
+    console.error("Internal server error: " + error);
     return NextResponse.json(
       { message: "Internal server error: " + error },
       { status: 500 }

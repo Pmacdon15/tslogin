@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import Database from "./db.ts";
-import PasswordHasher from "./hasher.ts";
+// import PasswordHasher from "./hasher.ts";
 
 type Prop = {
     params: {

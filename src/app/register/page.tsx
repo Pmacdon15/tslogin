@@ -22,7 +22,7 @@ export default function Register() {
         return;
       }
 
-      const response = await fetch("/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function Register() {
               },
             }}
             variant="outlined"
-            {...register("firstName", { required: true })}
+            {...register("first_name", { required: true })}
             label="Enter your first name"
             type="text"
           />
@@ -120,7 +120,7 @@ export default function Register() {
               },
             }}
             variant="outlined"
-            {...register("lastName", { required: true })}
+            {...register("last_name", { required: true })}
             label="Enter your last name"
             type="text"
           />
