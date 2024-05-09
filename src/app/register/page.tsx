@@ -41,6 +41,9 @@ export default function Register() {
             label="Enter your Email"
             type="email"
             required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -66,6 +69,9 @@ export default function Register() {
             label="Enter your first name"
             type="text"
             required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -91,6 +97,9 @@ export default function Register() {
             label="Enter your last name"
             type="text"
             required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
 
           <TextField
@@ -117,6 +126,9 @@ export default function Register() {
             label="Enter your Password"
             type="password"
             required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -142,6 +154,9 @@ export default function Register() {
             label="Confirm your Password"
             type="password"
             required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <Button
             variant="contained"

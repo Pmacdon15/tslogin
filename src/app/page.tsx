@@ -48,7 +48,10 @@ export default function Home() {
               {...register("email", { required: true })}
               label="Enter your Email"
               type="email"
-              required={true}              
+              required={true}  
+              InputLabelProps={{
+                required: false,
+              }}            
             />
             <TextField
               sx={{
@@ -74,6 +77,9 @@ export default function Home() {
               label="Enter your Password"
               type="password"
               required={true}
+              InputLabelProps={{
+                required: false,
+              }}
             />
             <Button
               sx={{

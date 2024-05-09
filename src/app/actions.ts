@@ -13,6 +13,11 @@ export async function signUp(formData: FormData) {
     const first_name = formData.get("first_name") as string;
     const last_name = formData.get("last_name") as string;
     const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirm_password") as string;
+
+    if (password!== confirmPassword) {
+      throw new Error ("Passwords do not match");
+    }
 
     const passwordHasher = new PasswordHasher();
     const hashedPassword = await passwordHasher.hash(password);
