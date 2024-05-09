@@ -1,33 +1,43 @@
 "use client";
-
 import styles from "./page.module.css";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-
 import { useRouter } from "next/navigation";
-
 import { signUp } from "../actions.ts";
+import {useState , useEffect} from "react";
 
 export default function Register() {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
 
+  const [password, setPassword] = useState("");
+  
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const handlePasswordChange = (e:any) => {
+    setPassword(e.target.value);
+  };
+
+  const handleConfirmPasswordChange = (e:any) => {
+    setConfirmPassword(e.target.value);
+    setConfirmPasswordError(e.target.value !== password ? "Passwords do not match" : "");
+  };
+
   const onSubmit = async (data: { [key: string]: string }) => {
-    if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-    try {
-      if(await signUp(data.email, data.first_name, data.last_name, data.password)){
-        alert("User registered successfully");        
-        router.push("/");
-        return;
-      }
-      throw new Error("Error registering user");
-    } catch (error) {
-      alert("Error registering user");
-      console.error("Error registering user: ", error);
+    if (
+      await signUp(
+        data.email,
+        data.first_name,
+        data.last_name,
+        data.password,
+        data.confirm_password
+      )
+    ) {
+      router.push(`/dashboard/${data.email}`);
+    } else {
+      alert("User not signed up");
     }
   };
 
@@ -60,6 +70,10 @@ export default function Register() {
             {...register("email", { required: true })}
             label="Enter your Email"
             type="email"
+            required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -84,6 +98,10 @@ export default function Register() {
             {...register("first_name", { required: true })}
             label="Enter your first name"
             type="text"
+            required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -108,6 +126,10 @@ export default function Register() {
             {...register("last_name", { required: true })}
             label="Enter your last name"
             type="text"
+            required={true}
+            InputLabelProps={{
+              required: false,
+            }}
           />
 
           <TextField
@@ -133,6 +155,11 @@ export default function Register() {
             {...register("password", { required: true })}
             label="Enter your Password"
             type="password"
+            required={true}
+            onChange={handlePasswordChange}
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <TextField
             sx={{
@@ -154,9 +181,22 @@ export default function Register() {
               },
             }}
             variant="outlined"
-            {...register("confirmPassword", { required: true })}
+            {...register("confirm_password", { required: true })}
             label="Confirm your Password"
             type="password"
+            required={true}
+            onChange={handleConfirmPasswordChange}
+            error={confirmPasswordError !== ""}
+            helperText={
+              confirmPasswordError ? (
+                <span style={{ color: "#8B0000" }}>Passwords do not match!!</span>
+              ) : (
+                ""
+              )            
+            }
+            InputLabelProps={{
+              required: false,
+            }}
           />
           <Button
             variant="contained"
