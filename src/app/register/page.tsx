@@ -150,7 +150,7 @@ export default function Register() {
               },
             }}
             variant="outlined"
-            {...register("confirmPassword", { required: true })}
+            {...register("confirm_password", { required: true })}
             label="Confirm your Password"
             type="password"
             required={true}

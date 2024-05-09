@@ -7,46 +7,48 @@ import { redirect } from "next/navigation";
 
 export async function signUp(formData: FormData) {
   let userSignedUp = false;
-  let email = "";
+  const email = formData.get("email") as string;
+  const first_name = formData.get("first_name") as string;
+  const last_name = formData.get("last_name") as string;
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirm_password") as string;
+  const passwordHasher = new PasswordHasher();
+  const hashedPassword = await passwordHasher.hash(password);
+  const db = new Database();
+  ;
   try {
-    email = formData.get("email") as string;
-    const first_name = formData.get("first_name") as string;
-    const last_name = formData.get("last_name") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirm_password") as string;
-
-    if (password!== confirmPassword) {
-      throw new Error ("Passwords do not match");
+    if (password !== confirmPassword) {
+      throw new Error("Passwords do not match");
     }
-
-    const passwordHasher = new PasswordHasher();
-    const hashedPassword = await passwordHasher.hash(password);
-    const db = new Database();
 
     if (await db.register(email, first_name, last_name, hashedPassword))
       userSignedUp = true;
+    else throw new Error("Database rejected sign up!");
   } catch (error) {
-    console.error("Error registering user: ", error);
+    console.error(
+      "Error registering user: ",
+      error instanceof Error ? error.message : error
+    );
   }
   if (userSignedUp) {
     applyCookie(email);
     redirect(`/dashboard/${email}`);
-    return;
   }
 }
 
 export async function login(formData: FormData) {
   let userAuthed = false;
-  let email: string = "";
-  try {
-    email = formData.get("email") as string;
+  const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const db = new Database();
-    const hash = await db.getHashedPassword(email);
-    const passwordHasher = new PasswordHasher();
-    if (await passwordHasher.verify(password, hash)) userAuthed = true;
+  try {
+    
+    if (await verifyPassword(email, password)) userAuthed = true;
+    throw new Error("Authentication failed");
   } catch (error) {
-    console.error("Error logging in user: ", error);
+    console.error(
+      "Error logging in user: ",
+      error instanceof Error ? error.message : error
+    );
   }
 
   if (userAuthed) {
