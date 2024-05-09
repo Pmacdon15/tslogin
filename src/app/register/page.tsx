@@ -9,14 +9,30 @@ import { signUp } from "../actions.ts";
 
 export default function Register() {
   const router = useRouter();
-  const { register } = useForm();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (data: { [key: string]: string }) => {
+    if (
+      await signUp(
+        data.email,
+        data.first_name,
+        data.last_name,
+        data.password,
+        data.confirm_password
+      )
+    ) {
+      router.push(`/dashboard/${data.email}`);
+    } else {
+      alert("User not signed up");
+    }
+  };
 
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <h1>Sign Up</h1>
         <h4>Please register your credentials.</h4>
-        <form action={signUp} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <TextField
             sx={{
               input: { color: "white" },

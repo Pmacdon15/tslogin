@@ -6,18 +6,14 @@ import Database from "./db.ts";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-export async function signUp(formData: FormData) {
+export async function signUp(email: string, first_name: string, last_name: string, password: string, confirm_password: string) {
   let userSignedUp = false;
-  const email = formData.get("email") as string;
-  const first_name = formData.get("first_name") as string;
-  const last_name = formData.get("last_name") as string;
-  const password = formData.get("password") as string;
-  const confirmPassword = formData.get("confirm_password") as string;
+ 
   const passwordHasher = new PasswordHasher();
   const hashedPassword = await passwordHasher.hash(password);
   const db = new Database();
   try {
-    if (password !== confirmPassword) {
+    if (password !== confirm_password) {
       throw new Error("Passwords do not match");
     }
 
@@ -32,7 +28,7 @@ export async function signUp(formData: FormData) {
   }
   if (userSignedUp) {
     applyCookie(email);
-    redirect(`/dashboard/${email}`);
+    //redirect(`/dashboard/${email}`);
     return true;
   }
   return false;
