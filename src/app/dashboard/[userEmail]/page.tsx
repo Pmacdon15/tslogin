@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { verifyToken } from "../../actions.ts";
+import Button from "@mui/material/Button";
+import { logout } from "../../actions.ts";
 
 type Prop = {
   params: {
@@ -25,12 +27,22 @@ export default function Dashboard(props: Prop) {
       }
     };
     AuthorizeUser();
-  }, [decodedUserEmail])
-  
+  }, [decodedUserEmail]);
+
   return authenticatedUser ? (
     <div>
       <h1>Welcome </h1>
       <p>Good Day</p>
+      <Button
+        sx={{
+          background: "linear-gradient(to bottom, #5142d4, #6098ca)",
+        }}
+        variant="contained"
+        color="primary"
+        onClick={() => logout()}
+      >
+        Logout
+      </Button>
     </div>
   ) : (
     <p>Loading...</p>

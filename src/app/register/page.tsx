@@ -202,7 +202,6 @@ export default function Register() {
             variant="contained"
             type="submit"
             sx={{
-              backgroundColor: "green",
               background: "linear-gradient(to bottom, #5142d4, #6098ca)",
             }}
           >

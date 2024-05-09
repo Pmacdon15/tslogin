@@ -4,11 +4,16 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import Database from "./db.ts";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
-export async function signUp(email: string, first_name: string, last_name: string, password: string, confirm_password: string) {
+export async function signUp(
+  email: string,
+  first_name: string,
+  last_name: string,
+  password: string,
+  confirm_password: string
+) {
   let userSignedUp = false;
- 
+
   const passwordHasher = new PasswordHasher();
   const hashedPassword = await passwordHasher.hash(password);
   const db = new Database();
@@ -51,7 +56,7 @@ export async function login(email: string, password: string) {
   }
 
   if (userAuthed) {
-    applyCookie(email);        
+    applyCookie(email);
     return true;
   } else {
     return false;
@@ -75,7 +80,16 @@ export async function verifyToken(email: string) {
   }
 }
 
-// Helper functions
+export async function logout() {
+  try {
+    cookies().delete("AuthCookieTracking");
+  } catch (error) {
+    console.error("Error logging out: ", error);
+  }
+  redirect("/");
+}
+
+//MARK: Helper functions
 async function verifyPassword(email: string, password: string) {
   try {
     const db = new Database();

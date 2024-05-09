@@ -83,7 +83,6 @@ export default function Home() {
             />
             <Button
               sx={{
-                backgroundColor: "green",
                 background: "linear-gradient(to bottom, #5142d4, #6098ca)",
               }}
               variant="contained"
@@ -103,7 +102,7 @@ export default function Home() {
               router.push("/register");
             }}
             sx={{
-              backgroundColor: "green",
+              // backgroundColor: "green",
               background: "linear-gradient(to bottom, #5142d4, #6098ca)",
             }}
           >
