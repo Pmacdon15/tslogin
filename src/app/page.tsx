@@ -7,24 +7,13 @@ import Button from "@mui/material/Button";
 
 import { useRouter } from "next/navigation";
 
-import { login } from "./actions.ts";
+import {login}  from "./actions.ts";
 
 export default function Home() {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async (data: { [key: string]: string }) => {    
-    try {
-      if (await login(data.email, data.password)) {
-        router.push(`/dashboard/${data.email}`);
-        return;
-      }
-      throw new Error("Error logging in user");
-    } catch (error) {
-      alert("Error logging in user");
-      console.error("Error logging in user: ", error);
-    }
-  };
+ 
 
   return (
     <main className={styles.main}>
@@ -32,11 +21,9 @@ export default function Home() {
         <div className={styles.left}>
           <h1>Login</h1>
           <h4>Please verify your credentials.</h4>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
+          <form            
             className={styles.form}
-            // action="/login"
-            // method="post"
+            action={login}                        
           >
             <TextField
               sx={{
@@ -61,7 +48,7 @@ export default function Home() {
               {...register("email", { required: true })}
               label="Enter your Email"
               type="email"
-              
+              required={true}              
             />
             <TextField
               sx={{
@@ -86,6 +73,7 @@ export default function Home() {
               {...register("password", { required: true })}
               label="Enter your Password"
               type="password"
+              required={true}
             />
             <Button
               sx={{

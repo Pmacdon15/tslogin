@@ -4,39 +4,19 @@ import styles from "./page.module.css";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-
 import { useRouter } from "next/navigation";
-
 import { signUp } from "../actions.ts";
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = async (data: { [key: string]: string }) => {
-    if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-    try {
-      if(await signUp(data.email, data.first_name, data.last_name, data.password)){
-        alert("User registered successfully");        
-        router.push("/");
-        return;
-      }
-      throw new Error("Error registering user");
-    } catch (error) {
-      alert("Error registering user");
-      console.error("Error registering user: ", error);
-    }
-  };
+  const { register } = useForm();
 
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <h1>Sign Up</h1>
         <h4>Please register your credentials.</h4>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form action={signUp} className={styles.form}>
           <TextField
             sx={{
               input: { color: "white" },
@@ -60,6 +40,7 @@ export default function Register() {
             {...register("email", { required: true })}
             label="Enter your Email"
             type="email"
+            required={true}
           />
           <TextField
             sx={{
@@ -84,6 +65,7 @@ export default function Register() {
             {...register("first_name", { required: true })}
             label="Enter your first name"
             type="text"
+            required={true}
           />
           <TextField
             sx={{
@@ -108,6 +90,7 @@ export default function Register() {
             {...register("last_name", { required: true })}
             label="Enter your last name"
             type="text"
+            required={true}
           />
 
           <TextField
@@ -133,6 +116,7 @@ export default function Register() {
             {...register("password", { required: true })}
             label="Enter your Password"
             type="password"
+            required={true}
           />
           <TextField
             sx={{
@@ -157,6 +141,7 @@ export default function Register() {
             {...register("confirmPassword", { required: true })}
             label="Confirm your Password"
             type="password"
+            required={true}
           />
           <Button
             variant="contained"
