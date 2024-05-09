@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import Database from "./db.ts";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function signUp(formData: FormData) {
   let userSignedUp = false;
@@ -15,15 +16,14 @@ export async function signUp(formData: FormData) {
   const passwordHasher = new PasswordHasher();
   const hashedPassword = await passwordHasher.hash(password);
   const db = new Database();
-  ;
   try {
     if (password !== confirmPassword) {
       throw new Error("Passwords do not match");
     }
 
-    if (await db.register(email, first_name, last_name, hashedPassword))
+    if (await db.register(email, first_name, last_name, hashedPassword)) {
       userSignedUp = true;
-    else throw new Error("Database rejected sign up!");
+    } else throw new Error("Database rejected sign up!");
   } catch (error) {
     console.error(
       "Error registering user: ",
@@ -33,17 +33,20 @@ export async function signUp(formData: FormData) {
   if (userSignedUp) {
     applyCookie(email);
     redirect(`/dashboard/${email}`);
+    return true;
   }
+  return false;
 }
-
-export async function login(formData: FormData) {
+export async function login(email: string, password: string) {
   let userAuthed = false;
-  const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  //const email = formData.get("email") as string;
+  //const password = formData.get("password") as string;
   try {
-    
-    if (await verifyPassword(email, password)) userAuthed = true;
-    throw new Error("Authentication failed");
+    if (await verifyPassword(email, password)) {
+      userAuthed = true;
+    } else {
+      throw new Error("Authentication failed");
+    }
   } catch (error) {
     console.error(
       "Error logging in user: ",
@@ -52,8 +55,10 @@ export async function login(formData: FormData) {
   }
 
   if (userAuthed) {
-    applyCookie(email);
-    redirect(`/dashboard/${email}`);
+    applyCookie(email);        
+    return true;
+  } else {
+    return false;
   }
 }
 
