@@ -188,7 +188,11 @@ export default function Register() {
             onChange={handleConfirmPasswordChange}
             error={confirmPasswordError !== ""}
             helperText={
-              confirmPasswordError ? "Passwords do not match!!" : ""
+              confirmPasswordError ? (
+                <span style={{ color: "#8B0000" }}>Passwords do not match!!</span>
+              ) : (
+                ""
+              )            
             }
             InputLabelProps={{
               required: false,
