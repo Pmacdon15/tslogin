@@ -19,8 +19,10 @@ export default function Register() {
       return;
     }
     try {
-      if(await signUp(data.email, data.first_name, data.last_name, data.password)){
-        alert("User registered successfully");        
+      if (
+        await signUp(data.email, data.first_name, data.last_name, data.password)
+      ) {
+        alert("User registered successfully");
         router.push("/");
         return;
       }
@@ -32,144 +34,142 @@ export default function Register() {
   };
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <h1>Sign Up</h1>
-        <h4>Please register your credentials.</h4>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <TextField
-            sx={{
-              input: { color: "white" },
-              label: { color: "white" }, // initial label color
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "white", // focused label color
-                },
+    <div className={styles.container}>
+      <h1>Sign Up</h1>
+      <h4>Please register your credentials.</h4>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <TextField
+          sx={{
+            input: { color: "white" },
+            label: { color: "white" }, // initial label color
+            "& .MuiInputLabel-root": {
+              "&.Mui-focused": {
+                color: "white", // focused label color
               },
-              width: "70%",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+            },
+            width: "70%",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
               },
-            }}
-            variant="outlined"
-            {...register("email", { required: true })}
-            label="Enter your Email"
-            type="email"
-          />
-          <TextField
-            sx={{
-              input: { color: "white" },
-              label: { color: "white" },
-              width: "70%",
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "white", // focused label color
-                },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
               },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+            },
+          }}
+          variant="outlined"
+          {...register("email", { required: true })}
+          label="Enter your Email"
+          type="email"
+        />
+        <TextField
+          sx={{
+            input: { color: "white" },
+            label: { color: "white" },
+            width: "70%",
+            "& .MuiInputLabel-root": {
+              "&.Mui-focused": {
+                color: "white", // focused label color
               },
-            }}
-            variant="outlined"
-            {...register("first_name", { required: true })}
-            label="Enter your first name"
-            type="text"
-          />
-          <TextField
-            sx={{
-              input: { color: "white" },
-              label: { color: "white" },
-              width: "70%",
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "white", // focused label color
-                },
+            },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
               },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
               },
-            }}
-            variant="outlined"
-            {...register("last_name", { required: true })}
-            label="Enter your last name"
-            type="text"
-          />
+            },
+          }}
+          variant="outlined"
+          {...register("first_name", { required: true })}
+          label="Enter your first name"
+          type="text"
+        />
+        <TextField
+          sx={{
+            input: { color: "white" },
+            label: { color: "white" },
+            width: "70%",
+            "& .MuiInputLabel-root": {
+              "&.Mui-focused": {
+                color: "white", // focused label color
+              },
+            },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
+            },
+          }}
+          variant="outlined"
+          {...register("last_name", { required: true })}
+          label="Enter your last name"
+          type="text"
+        />
 
-          <TextField
-            sx={{
-              input: { color: "white" },
-              label: { color: "white" },
-              width: "70%",
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "white", // focused label color
-                },
+        <TextField
+          sx={{
+            input: { color: "white" },
+            label: { color: "white" },
+            width: "70%",
+            "& .MuiInputLabel-root": {
+              "&.Mui-focused": {
+                color: "white", // focused label color
               },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+            },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
               },
-            }}
-            variant="outlined"
-            {...register("password", { required: true })}
-            label="Enter your Password"
-            type="password"
-          />
-          <TextField
-            sx={{
-              input: { color: "white" },
-              label: { color: "white" },
-              width: "70%",
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "white", // focused label color
-                },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
               },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+            },
+          }}
+          variant="outlined"
+          {...register("password", { required: true })}
+          label="Enter your Password"
+          type="password"
+        />
+        <TextField
+          sx={{
+            input: { color: "white" },
+            label: { color: "white" },
+            width: "70%",
+            "& .MuiInputLabel-root": {
+              "&.Mui-focused": {
+                color: "white", // focused label color
               },
-            }}
-            variant="outlined"
-            {...register("confirmPassword", { required: true })}
-            label="Confirm your Password"
-            type="password"
-          />
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              backgroundColor: "green",
-              background: "linear-gradient(to bottom, #5142d4, #6098ca)",
-            }}
-          >
-            Register today
-          </Button>
-        </form>
-      </div>
-    </main>
+            },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
+            },
+          }}
+          variant="outlined"
+          {...register("confirmPassword", { required: true })}
+          label="Confirm your Password"
+          type="password"
+        />
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            backgroundColor: "green",
+            background: "linear-gradient(to bottom, #5142d4, #6098ca)",
+          }}
+        >
+          Register today
+        </Button>
+      </form>
+    </div>
   );
 }

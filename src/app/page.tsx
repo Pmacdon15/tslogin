@@ -27,7 +27,7 @@ export default function Home() {
   };
 
   return (
-    <main className={styles.main}>
+    // <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>Login</h1>
@@ -117,6 +117,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-    </main>
+    // </main>
   );
 }
