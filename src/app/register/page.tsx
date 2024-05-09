@@ -1,15 +1,29 @@
 "use client";
-
 import styles from "./page.module.css";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import { signUp } from "../actions.ts";
+import {useState , useEffect} from "react";
 
 export default function Register() {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
+
+  const [password, setPassword] = useState("");
+  
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const handlePasswordChange = (e:any) => {
+    setPassword(e.target.value);
+  };
+
+  const handleConfirmPasswordChange = (e:any) => {
+    setConfirmPassword(e.target.value);
+    setConfirmPasswordError(e.target.value !== password ? "Passwords do not match" : "");
+  };
 
   const onSubmit = async (data: { [key: string]: string }) => {
     if (
@@ -142,6 +156,7 @@ export default function Register() {
             label="Enter your Password"
             type="password"
             required={true}
+            onChange={handlePasswordChange}
             InputLabelProps={{
               required: false,
             }}
@@ -170,6 +185,11 @@ export default function Register() {
             label="Confirm your Password"
             type="password"
             required={true}
+            onChange={handleConfirmPasswordChange}
+            error={confirmPasswordError !== ""}
+            helperText={
+              confirmPasswordError ? "Passwords do not match!!" : ""
+            }
             InputLabelProps={{
               required: false,
             }}
