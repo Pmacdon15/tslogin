@@ -30,6 +30,7 @@ export async function signUp(
       "Error registering user: ",
       error instanceof Error ? error.message : error
     );
+   
   }
   if (userSignedUp) {
     applyCookie(email);
@@ -38,11 +39,12 @@ export async function signUp(
   }
   return false;
 }
-export async function login(email: string, password: string) {
+export async function login(prevState: any, formData: FormData) {
   let userAuthed = false;
-  //const email = formData.get("email") as string;
-  //const password = formData.get("password") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
   try {
+
     if (await verifyPassword(email, password)) {
       userAuthed = true;
     } else {
@@ -53,13 +55,14 @@ export async function login(email: string, password: string) {
       "Error logging in user: ",
       error instanceof Error ? error.message : error
     );
+    //return {message: "Error logging in user "};
   }
-
+  // error instanceof Error ? error.message : error
   if (userAuthed) {
     applyCookie(email);
-    return true;
+    redirect(`/dashboard/${email}`);
   } else {
-    return false;
+    return { message: "Invalid credentials" };
   }
 }
 

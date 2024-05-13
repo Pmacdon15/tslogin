@@ -5,26 +5,25 @@ import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import { login } from "./actions.ts";
+import { useActionState } from "react";
+
+const initialState = {
+  message: '',
+} 
 
 export default function Home() {
+  const [state, formAction] = useActionState(login, initialState);
+
   const router = useRouter();
   const { register, handleSubmit } = useForm();
-
-  const onSubmit = async (data: { [key: string]: string }) => {
-    if (await login(data.email, data.password)) {
-      router.push(`/dashboard/${data.email}`);
-    } else {
-      alert("User not logged in");
-    }
-  };
+  
 
   return (
-    // <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>Login</h1>
           <h4>Please verify your credentials.</h4>
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form className={styles.form} action={formAction}>
             <TextField
               sx={{
                 input: { color: "white" },
@@ -53,6 +52,7 @@ export default function Home() {
                 required: false,
               }}
             />
+            
             <TextField
               sx={{
                 input: { color: "white" },
@@ -81,6 +81,7 @@ export default function Home() {
                 required: false,
               }}
             />
+            
             <Button
               sx={{
                 background: "linear-gradient(to bottom, #5142d4, #6098ca)",
@@ -90,6 +91,7 @@ export default function Home() {
             >
               Login
             </Button>
+            <p>{state?.message}</p>
           </form>
         </div>
         <div className={styles.right}>
