@@ -101,26 +101,32 @@ export async function login(prevState: any, formData: FormData) {
       "Error logging in user: ",
       error instanceof Error ? error.message : error
     );
-    return { message: "User not authenticated Error: " + (error instanceof Error ? error.message : error) };
+    return { message: "User not authenticated. Error: " + (error instanceof Error ? error.message : error) };
   }
   applyCookie(email);
   redirect(`/dashboard/${email}`);
 }
 
-export async function verifyToken(email: string) {
+export async function auth(email: string) {
+  let Authed = false;
   try {
     const token = cookies().get("AuthCookieTracking")?.value; // Access the cookie value as a string
     if (!token) {
-      return false;
+     throw new Error("No token found");
     }
     const user = jwt.verify(token, process.env.SECRET_KEY_JWT as string) as {
       username: string;
     };
-    console.log("User: ", user);
-    return user.username === email;
+
+    if (user.username !== email) {
+      throw new Error("Invalid token");
+    }    
+    Authed = true;
   } catch (error) {
-    console.error("Error verifying token: ", error);
-    return false;
+    console.error("Error verifying token: ", error instanceof Error ? error.message : error);    
+  }
+  if(!Authed){
+    redirect("/");
   }
 }
 
