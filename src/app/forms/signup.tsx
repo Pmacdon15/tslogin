@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { signUp } from "../actions.ts";
-
 import {useState , useActionState} from "react";
 const initialState = {
   message: '',

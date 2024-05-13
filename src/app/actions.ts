@@ -81,7 +81,7 @@ export async function signUp(prevState: any, formData: FormData) {
 
 export async function login(prevState: any, formData: FormData) {
 
-  const validatedFields = schemaSignup.safeParse({
+  const validatedFields = schemaLogin.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
   })
@@ -94,7 +94,6 @@ export async function login(prevState: any, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   try {
-
     if (!await verifyPassword(email, password))
       throw new Error("Authentication failed");
   } catch (error) {
