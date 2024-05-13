@@ -17,11 +17,12 @@
     "@vercel/postgres": "^0.8.0",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
-    "next": "14.2.3",
+    "next": "^14.3.0-canary.59",
     "pg": "^8.11.5",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.51.3"
+    "react": "^19.0.0-beta-4508873393-20240430",
+    "react-dom": "^19.0.0-beta-4508873393-20240430",
+    "react-hook-form": "^7.51.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
