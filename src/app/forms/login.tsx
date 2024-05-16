@@ -4,14 +4,14 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { login } from "@/app/actions";
-import { useActionState } from "react";
+import { useFormState } from 'react-dom';
 
 const initialState = {
   message: '',
 } 
 
 export default function LoginForm() {
-    const [state, formAction] = useActionState(login, initialState);
+    const [state, formAction] = useFormState(login, initialState);
     const { register } = useForm();
 
     return (

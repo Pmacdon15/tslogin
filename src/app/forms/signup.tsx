@@ -5,14 +5,15 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { signUp } from "../actions.ts";
-import {useState , useActionState} from "react";
+import {useState } from "react";
+import { useFormState } from 'react-dom';
 const initialState = {
   message: '',
 }
 
 export default function Signup() {
   const { register,} = useForm();
-  const [state, formAction] = useActionState(signUp, initialState);
+  const [state, formAction] =  useFormState(signUp, initialState);
 
   const [password, setPassword] = useState("");
   
